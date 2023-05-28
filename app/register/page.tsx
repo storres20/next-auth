@@ -1,14 +1,27 @@
 'use client'
 
 import React, { useState } from 'react'
+import axios from 'axios'
 
 const Register = () => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
+  const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+
+    try {
+      const { data } = await axios.post('/api/register', {
+        name,
+        email,
+        password,
+      })
+
+      console.log(data)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
@@ -31,6 +44,7 @@ const Register = () => {
                 className="border border-slate-400 w-80 rounded-md text-slate-600 px-2 py-1 focus:outline-none focus:ring-2 focus:ring-cyan-600 focus:border-transparent"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                required
               />
             </div>
 
@@ -44,6 +58,7 @@ const Register = () => {
                 className="border border-slate-400 w-80 rounded-md text-slate-600 px-2 py-1 focus:outline-none focus:ring-2 focus:ring-cyan-600 focus:border-transparent"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                required
               />
             </div>
 
@@ -57,6 +72,7 @@ const Register = () => {
                 className="border border-slate-400 w-80 rounded-md text-slate-600 px-2 py-1 focus:outline-none focus:ring-2 focus:ring-cyan-600 focus:border-transparent"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                required
               />
             </div>
 
