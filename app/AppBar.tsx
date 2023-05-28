@@ -2,8 +2,11 @@
 
 import React, { useState } from 'react'
 import Link from 'next/link'
+import { useSession, signOut } from 'next-auth/react'
 
 export default function AppBar() {
+  const { data } = useSession()
+
   const [mobile, setMobile] = useState(false)
 
   const handleMobile = () => {
@@ -55,15 +58,29 @@ export default function AppBar() {
             </div>
             {/* secundary nav */}
             <div className="hidden md:flex items-center space-x-1">
-              <Link href="/login" className="py-5 px-3">
-                Login
-              </Link>
-              <Link
-                href="/register"
-                className="py-2 px-3 bg-cyan-600 hover:bg-cyan-700 text-white hover:text-white rounded transition duration-300"
-              >
-                Signup
-              </Link>
+              {data?.user ? (
+                <>
+                  <span>Hello, {data?.user?.name} </span>
+                  <span
+                    className="py-5 px-3 cursor-pointer"
+                    onClick={() => signOut()}
+                  >
+                    Logout
+                  </span>
+                </>
+              ) : (
+                <>
+                  <Link href="/login" className="py-5 px-3">
+                    Login
+                  </Link>
+                  <Link
+                    href="/register"
+                    className="py-2 px-3 bg-cyan-600 hover:bg-cyan-700 text-white hover:text-white rounded transition duration-300"
+                  >
+                    Signup
+                  </Link>
+                </>
+              )}
             </div>
 
             {/* mobile button goes here */}
